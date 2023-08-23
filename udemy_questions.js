@@ -14,7 +14,7 @@ const correctAnswerLetters = ["a", "b", "c", "d", "e", "f", "h", "i"]
 
     for (let i = 0; i < elements.snapshotLength; i++) {
         const questionElement = elements.snapshotItem(i);
-        const questionText = questionElement.textContent.trim()
+        const questionText = questionElement.textContent.replace(/\s*\([^)]*\)$/, '').trim()
         const answersForEachOne = []
         let correct = []
 
@@ -30,21 +30,25 @@ const correctAnswerLetters = ["a", "b", "c", "d", "e", "f", "h", "i"]
             answersForEachOne.push(singleAnswerText)
         }
 
-        var obj = {
-            question: questionText,
-            answers: answersForEachOne,
-            correct: correct.length > 1 ? `${correct.join(' | ')}` : correct[0]
-        }
+        correct.forEach(c => {
 
-        if (questionText.length > 300){
-            obj.question = "SELECCIONE UNA OPCIÓN:"
-            obj.message = questionText
-        }
-
-        questionsAndAnswers.push(obj)
+            var obj = {
+                question: questionText,
+                answers: answersForEachOne,
+                correct: c
+            }
+    
+            if (questionText.length > 300){
+                obj.question = "SELECCIONE UNA OPCIÓN:"
+                obj.message = questionText
+            }
+    
+            questionsAndAnswers.push(obj)
+        })        
     }
   }
 
 clear()
 createObject()
+copy(questionsAndAnswers)
 console.log(questionsAndAnswers)
