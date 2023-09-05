@@ -1,13 +1,11 @@
 const questionsAndAnswers = []
 
-// Replace the following array with your own XPaths
 const xpaths = [
     "//div[@id='question-prompt']",
   ];
 
 const correctAnswerLetters = ["a", "b", "c", "d", "e", "f", "h", "i"]
   
-  // Loop through the XPaths and store the results
   function createObject(){
 
     const elements = document.evaluate("//div[@id='question-prompt']", document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
@@ -37,7 +35,6 @@ const correctAnswerLetters = ["a", "b", "c", "d", "e", "f", "h", "i"]
                 answer: c,
                 explanation: "",
                 messages: [],
-                areOptionsTooLarge: areOptionsTooLarge(answersForEachOne)
             } 
             
             if (questionText.length > 300){
