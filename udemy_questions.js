@@ -24,8 +24,7 @@ const correctAnswerLetters = ["a", "b", "c", "d", "e", "f", "h", "i"]
             const singleAnswer = optionElements.snapshotItem(j)
             let singleAnswerText = singleAnswer.textContent.trim();
             if (singleAnswerText.endsWith('(Correcto)')) {
-                correct.push(correctAnswerLetters[j])
-                singleAnswerText = singleAnswerText.replace('(Correcto)', '')
+                correct.push(correctAnswerLetters[j])              
             }
             answersForEachOne.push(singleAnswerText)
         }
@@ -34,19 +33,68 @@ const correctAnswerLetters = ["a", "b", "c", "d", "e", "f", "h", "i"]
 
             var obj = {
                 question: questionText,
-                answers: answersForEachOne,
-                correct: c
-            }
-    
+                options: answersForEachOne,
+                answer: c,
+                explanation: "",
+                messages: [],
+                areOptionsTooLarge: areOptionsTooLarge(answersForEachOne)
+            } 
+            
             if (questionText.length > 300){
+                pushIfNotExist(obj.messages, questionText)
                 obj.question = "SELECCIONE UNA OPCIÓN:"
-                obj.message = questionText
             }
-    
+
+            if (areOptionsTooLarge(answersForEachOne)){
+                pushIfNotExist(obj.messages, questionText)
+                obj.messages.push(getOptionsAsMessage(answersForEachOne))
+                obj.question = "SELECCIONE UNA OPCIÓN:"
+                obj.options = getOptionsAsLetters(answersForEachOne)
+            }
+
             questionsAndAnswers.push(obj)
         })        
     }
   }
+
+  function areOptionsTooLarge(options){
+    for(let i =0; i < options.length; i++){
+        if(options[i].length >= 100){
+            return true
+        }
+    }
+    return false
+  }
+
+  function getOptionsAsMessage(options) {
+    let result = "";
+  
+    for (let i = 0; i < options.length; i++) {
+      const letter = String.fromCharCode(97 + i);
+  
+      result += `${letter}) ${options[i]}\n`;
+    }
+  
+    return result;
+  }
+
+  function getOptionsAsLetters(options) {
+    let result = [];
+  
+    for (let i = 0; i < options.length; i++) {
+      const letter = String.fromCharCode(97 + i);
+      result[i] = letter
+    }
+  
+    return result;
+  }
+
+  function pushIfNotExist(arr, value1){
+    if (!arr.includes(value1)) {
+        arr.push(value1);
+      }
+  }
+
 
 clear()
 createObject()
